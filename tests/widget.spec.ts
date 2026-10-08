@@ -33,4 +33,14 @@ test.describe('Uchi.ru widget ', () => {
 
     await expect(widgetPage.getTitle()).toHaveText('Связь с поддержкой');
   });
+
+  test('finds articles by search query', async () => {
+    await widgetPage.openWidget();
+
+    await widgetPage.search('пароль');
+
+    await expect(widgetPage.getSearchResultsTitle()).toHaveText(/Нашлось \d+ стат/);
+    await expect(widgetPage.getSearchResults().first()).toBeVisible();
+    await expect(widgetPage.getSearchResults().filter({ hasText: 'Забыли или потеряли логин или пароль?' })).toHaveCount(1);
+  });
 });
